@@ -308,8 +308,11 @@
 
 	init_lighting()
 
-	for(var/turf/open/space/S in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
-		S.update_starlight()
+	if(config.starlight)
+		for(var/turf/open/space/S in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
+			S.SetLuminosity(4,1)
+
+		src.SetLuminosity(0)
 
 /turf/proc/update_lumcount(amount)
 	lighting_lumcount += amount
@@ -331,9 +334,12 @@
 		if(!lighting_object)
 			lighting_object = new (src)
 		redraw_lighting(1)
-		for(var/turf/open/space/T in RANGE_TURFS(1,src))
-			T.update_starlight()
 
+		if(config.starlight)
+			for(var/turf/open/space/S in RANGE_TURFS(1,src)) //RANGE_TURFS is in code\__HELPERS\game.dm
+				S.SetLuminosity(4,1)
+
+			src.SetLuminosity(0)
 
 /turf/open/space/init_lighting()
 	if(lighting_changed)
